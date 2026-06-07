@@ -85,10 +85,12 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
   </div>
 
   <div class="card">
-    <div class="apikey-row">
-      <label for="apiKey">API Key</label>
-      <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" aria-label="Anthropic API key" />
-    </div>
+    <form onsubmit="return false" autocomplete="off">
+      <div class="apikey-row">
+        <label for="apiKey">API Key</label>
+        <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="new-password" aria-label="Anthropic API key" />
+      </div>
+    </form>
     <p class="apikey-hint">Stored in localStorage — sent only to the Anthropic API.</p>
   </div>
 
