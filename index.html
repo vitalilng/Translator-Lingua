@@ -43,9 +43,6 @@ textarea::placeholder { color: var(--color-text-tertiary); }
 .shortcut-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; }
 input[type=text] { padding: 8px 12px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); min-width: 160px; max-width: 220px; }
 input[type=text]::placeholder { color: var(--color-text-tertiary); }
-.formality { display: flex; gap: 4px; }
-.formality button { font-size: 13px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; }
-.formality button.active { background: var(--color-background-secondary); color: var(--color-text-primary); border-color: var(--color-border-primary); font-weight: 500; }
 .run-btn { padding: 8px 20px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; }
 .run-btn:hover { background: var(--color-background-secondary); }
 .run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -56,15 +53,17 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
 .section { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
 .section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 .section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-.translation-header { display: flex; align-items: flex-start; gap: 10px; }
-.translation-text { font-size: 20px; font-weight: 500; color: var(--color-text-primary); line-height: 1.4; flex: 1; }
-.copy-btn { padding: 5px 10px; font-size: 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.translation-row { display: flex; gap: 12px; }
+.translation-col { flex: 1; min-width: 0; }
+.translation-col-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); margin-bottom: 6px; }
+.translation-header { display: flex; align-items: flex-start; gap: 8px; }
+.translation-text { font-size: 18px; font-weight: 500; color: var(--color-text-primary); line-height: 1.4; flex: 1; }
+.copy-btn { padding: 4px 9px; font-size: 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
 .copy-btn:hover { background: var(--color-background-secondary); }
-.meta-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.meta-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 .badge { font-size: 12px; padding: 3px 10px; border-radius: 99px; }
 .badge-lang { background: var(--color-background-info); color: var(--color-text-info); }
 .badge-tone { background: var(--color-background-secondary); color: var(--color-text-secondary); }
-.badge-formality { background: var(--color-background-success); color: var(--color-text-success); }
 .body-text { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
 .alt-item { font-size: 14px; color: var(--color-text-primary); padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
 .alt-item:last-child { border-bottom: none; }
@@ -76,6 +75,9 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
 @keyframes spin { to { transform: rotate(360deg); } }
 .error { font-size: 14px; color: var(--color-text-danger); padding: 8px 0; display: none; }
 .error.visible { display: block; }
+@media (max-width: 480px) {
+  .translation-row { flex-direction: column; gap: 16px; }
+}
 </style>
 </head>
 <body>
@@ -100,10 +102,6 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
     <div class="validation-hint" id="validationHint" role="alert"></div>
     <div class="controls">
       <input type="text" id="targetLang" placeholder="Target language (e.g. Romanian)" aria-label="Target language" />
-      <div class="formality" role="group" aria-label="Formality level">
-        <button class="active" data-f="informal" id="btnInformal" aria-pressed="true">Informal</button>
-        <button data-f="formal" id="btnFormal" aria-pressed="false">Formal</button>
-      </div>
       <button class="run-btn" id="runBtn" aria-label="Translate text">Translate</button>
     </div>
     <p class="shortcut-hint">Tip: Ctrl+Enter to translate</p>
@@ -117,14 +115,25 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
   <div class="card result-card" id="resultCard" aria-live="polite">
     <div class="section">
       <div class="section-label">Translation</div>
-      <div class="translation-header">
-        <div class="translation-text" id="translationText"></div>
-        <button class="copy-btn" id="copyBtn" aria-label="Copy translation to clipboard">Copy</button>
+      <div class="translation-row">
+        <div class="translation-col">
+          <div class="translation-col-label">Informal</div>
+          <div class="translation-header">
+            <div class="translation-text" id="translationInformal"></div>
+            <button class="copy-btn" data-copy="translationInformal" aria-label="Copy informal translation">Copy</button>
+          </div>
+        </div>
+        <div class="translation-col">
+          <div class="translation-col-label">Formal</div>
+          <div class="translation-header">
+            <div class="translation-text" id="translationFormal"></div>
+            <button class="copy-btn" data-copy="translationFormal" aria-label="Copy formal translation">Copy</button>
+          </div>
+        </div>
       </div>
       <div class="meta-row">
         <span class="badge badge-lang" id="sourceLang"></span>
         <span class="badge badge-tone" id="tone"></span>
-        <span class="badge badge-formality" id="formalityBadge"></span>
       </div>
     </div>
     <div class="section">
@@ -148,8 +157,6 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
 
 <script>
 (function () {
-  var formality = 'informal';
-
   var savedKey = localStorage.getItem('lingua_api_key');
   if (savedKey) document.getElementById('apiKey').value = savedKey;
 
@@ -157,23 +164,21 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
     localStorage.setItem('lingua_api_key', this.value.trim());
   });
 
-  document.getElementById('btnInformal').addEventListener('click', function () { setFormality(this); });
-  document.getElementById('btnFormal').addEventListener('click', function () { setFormality(this); });
   document.getElementById('runBtn').addEventListener('click', runTranslate);
-  document.getElementById('copyBtn').addEventListener('click', copyTranslation);
   document.getElementById('inputText').addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && e.ctrlKey) runTranslate();
   });
 
-  function setFormality(btn) {
-    document.querySelectorAll('.formality button').forEach(function (b) {
-      b.classList.remove('active');
-      b.setAttribute('aria-pressed', 'false');
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetId = this.dataset.copy;
+      var text = document.getElementById(targetId).textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Copied!';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+      });
     });
-    btn.classList.add('active');
-    btn.setAttribute('aria-pressed', 'true');
-    formality = btn.dataset.f;
-  }
+  });
 
   function escapeHtml(str) {
     return String(str)
@@ -181,15 +186,6 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
-  }
-
-  function copyTranslation() {
-    var text = document.getElementById('translationText').textContent;
-    navigator.clipboard.writeText(text).then(function () {
-      var btn = document.getElementById('copyBtn');
-      btn.textContent = 'Copied!';
-      setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
-    });
   }
 
   async function runTranslate() {
@@ -227,13 +223,13 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
 
     var systemPrompt = [
       'You are a professional linguist and translator.',
-      'Translate the user\'s text to ' + lang + ' using ' + formality + ' register.',
+      'Translate the user\'s text to ' + lang + ' in both informal and formal registers.',
       'Respond ONLY with a valid JSON object — no markdown, no extra text:',
       '{',
-      '  "translation": "translated text",',
+      '  "translation_informal": "informal translation",',
+      '  "translation_formal": "formal translation",',
       '  "source_language": "detected language name",',
       '  "tone": "tone of source (casual, formal, sarcastic, etc)",',
-      '  "formality_used": "' + formality + '",',
       '  "alternatives": ["alt1", "alt2", "alt3"],',
       '  "meaning": "explanation of meaning, idioms, cultural context",',
       '  "examples": [',
@@ -256,7 +252,7 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
         },
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
-          max_tokens: 2000,
+          max_tokens: 2500,
           system: systemPrompt,
           messages: [{ role: 'user', content: text }]
         })
@@ -272,10 +268,10 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
       var raw = data.content[0].text.replace(/```json|```/g, '').trim();
       var result = JSON.parse(raw);
 
-      document.getElementById('translationText').textContent = result.translation;
+      document.getElementById('translationInformal').textContent = result.translation_informal;
+      document.getElementById('translationFormal').textContent = result.translation_formal;
       document.getElementById('sourceLang').textContent = result.source_language;
       document.getElementById('tone').textContent = result.tone;
-      document.getElementById('formalityBadge').textContent = result.formality_used;
 
       document.getElementById('alternatives').innerHTML = result.alternatives
         .map(function (a) { return '<div class="alt-item">' + escapeHtml(a) + '</div>'; }).join('');
