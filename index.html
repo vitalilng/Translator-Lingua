@@ -1,49 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lingua — Translation Tool</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans);background:var(--color-background-tertiary);min-height:100vh;padding:2rem 1rem}
-.app{max-width:720px;margin:0 auto}
-.header{margin-bottom:2rem}
-.header h1{font-size:22px;font-weight:500;color:var(--color-text-primary)}
-.header p{font-size:14px;color:var(--color-text-secondary);margin-top:4px}
-.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
-textarea{width:100%;min-height:100px;padding:10px 12px;font-size:15px;font-family:var(--font-sans);resize:vertical;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);line-height:1.5}
-textarea:focus{outline:none;border-color:var(--color-border-primary)}
-textarea::placeholder{color:var(--color-text-tertiary)}
-.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
-input[type=text]{padding:8px 12px;font-size:14px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-primary);min-width:160px;max-width:220px}
-input[type=text]::placeholder{color:var(--color-text-tertiary)}
-.formality{display:flex;gap:4px}
-.formality button{font-size:13px;padding:6px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer}
-.formality button.active{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
-.run-btn{padding:8px 20px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
-.run-btn:hover{background:var(--color-background-secondary)}
-.run-btn:disabled{opacity:0.4;cursor:not-allowed}
-.result-card{display:none}
-.result-card.visible{display:block}
-.section{margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
-.section:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
-.section-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-tertiary);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.section-label i{font-size:14px}
-.translation-text{font-size:20px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
-.meta-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-.badge{font-size:12px;padding:3px 10px;border-radius:99px}
-.badge-lang{background:var(--color-background-info);color:var(--color-text-info)}
-.badge-tone{background:var(--color-background-secondary);color:var(--color-text-secondary)}
-.badge-formality{background:var(--color-background-success);color:var(--color-text-success)}
-.body-text{font-size:14px;color:var(--color-text-secondary);line-height:1.6}
-.alt-item{font-size:14px;color:var(--color-text-primary);padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
-.alt-item:last-child{border-bottom:none}
-.example-item{font-size:14px;line-height:1.5;padding:6px 0;color:var(--color-text-secondary)}
-.example-item strong{color:var(--color-text-primary);font-weight:500}
-.loading{display:none;align-items:center;gap:8px;color:var(--color-text-tertiary);font-size:14px;padding:1rem 0}
-.loading.visible{display:flex}
-.spinner{width:16px;height:16px;border:1.5px solid var(--color-border-tertiary);border-top-color:var(--color-text-secondary);border-radius:50%;animation:spin 0.7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.error{font-size:14px;color:var(--color-text-danger);padding:8px 0;display:none}
-.error.visible{display:block}
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f5f5f5;
+  --color-background-tertiary: #f0f0f0;
+  --color-background-info: #e8f0fe;
+  --color-background-success: #e6f4ea;
+  --color-border-primary: #aaaaaa;
+  --color-border-secondary: #dddddd;
+  --color-border-tertiary: #eeeeee;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #555555;
+  --color-text-tertiary: #999999;
+  --color-text-info: #1a73e8;
+  --color-text-success: #137333;
+  --color-text-danger: #c62828;
+  --border-radius-md: 6px;
+  --border-radius-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); background: var(--color-background-tertiary); min-height: 100vh; padding: 2rem 1rem; }
+.app { max-width: 720px; margin: 0 auto; }
+.header { margin-bottom: 2rem; }
+.header h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.header p { font-size: 14px; color: var(--color-text-secondary); margin-top: 4px; }
+.card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.apikey-row { display: flex; gap: 8px; align-items: center; }
+.apikey-row label { font-size: 13px; color: var(--color-text-secondary); white-space: nowrap; }
+.apikey-row input { flex: 1; padding: 7px 10px; font-size: 13px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-family: monospace; }
+.apikey-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; }
+textarea { width: 100%; min-height: 100px; padding: 10px 12px; font-size: 15px; font-family: var(--font-sans); resize: vertical; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); line-height: 1.5; }
+textarea:focus { outline: none; border-color: var(--color-border-primary); }
+textarea::placeholder { color: var(--color-text-tertiary); }
+.controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+.shortcut-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; }
+input[type=text] { padding: 8px 12px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); min-width: 160px; max-width: 220px; }
+input[type=text]::placeholder { color: var(--color-text-tertiary); }
+.formality { display: flex; gap: 4px; }
+.formality button { font-size: 13px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; }
+.formality button.active { background: var(--color-background-secondary); color: var(--color-text-primary); border-color: var(--color-border-primary); font-weight: 500; }
+.run-btn { padding: 8px 20px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.run-btn:hover { background: var(--color-background-secondary); }
+.run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.validation-hint { font-size: 13px; color: var(--color-text-danger); margin-top: 6px; display: none; }
+.validation-hint.visible { display: block; }
+.result-card { display: none; }
+.result-card.visible { display: block; }
+.section { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.translation-header { display: flex; align-items: flex-start; gap: 10px; }
+.translation-text { font-size: 20px; font-weight: 500; color: var(--color-text-primary); line-height: 1.4; flex: 1; }
+.copy-btn { padding: 5px 10px; font-size: 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.copy-btn:hover { background: var(--color-background-secondary); }
+.meta-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.badge { font-size: 12px; padding: 3px 10px; border-radius: 99px; }
+.badge-lang { background: var(--color-background-info); color: var(--color-text-info); }
+.badge-tone { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+.badge-formality { background: var(--color-background-success); color: var(--color-text-success); }
+.body-text { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+.alt-item { font-size: 14px; color: var(--color-text-primary); padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.alt-item:last-child { border-bottom: none; }
+.example-item { font-size: 14px; line-height: 1.5; padding: 6px 0; color: var(--color-text-secondary); }
+.example-item strong { color: var(--color-text-primary); font-weight: 500; }
+.loading { display: none; align-items: center; gap: 8px; color: var(--color-text-tertiary); font-size: 14px; padding: 1rem 0; }
+.loading.visible { display: flex; }
+.spinner { width: 16px; height: 16px; border: 1.5px solid var(--color-border-tertiary); border-top-color: var(--color-text-secondary); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error { font-size: 14px; color: var(--color-text-danger); padding: 8px 0; display: none; }
+.error.visible { display: block; }
 </style>
 </head>
 <body>
@@ -54,24 +85,39 @@ input[type=text]::placeholder{color:var(--color-text-tertiary)}
   </div>
 
   <div class="card">
-    <textarea id="inputText" placeholder="Enter text to translate..."></textarea>
-    <div class="controls">
-      <input type="text" id="targetLang" placeholder="Target language (e.g. Romanian)" />
-      <div class="formality">
-        <button class="active" data-f="informal" id="btnInformal">Informal</button>
-        <button data-f="formal" id="btnFormal">Formal</button>
-      </div>
-      <button class="run-btn" id="runBtn">Translate</button>
+    <div class="apikey-row">
+      <label for="apiKey">API Key</label>
+      <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" aria-label="Anthropic API key" />
     </div>
+    <p class="apikey-hint">Stored in localStorage — sent only to the Anthropic API.</p>
   </div>
 
-  <div class="loading" id="loading"><div class="spinner"></div> Translating...</div>
-  <div class="error" id="error"></div>
+  <div class="card">
+    <textarea id="inputText" placeholder="Enter text to translate..." aria-label="Text to translate"></textarea>
+    <div class="validation-hint" id="validationHint" role="alert"></div>
+    <div class="controls">
+      <input type="text" id="targetLang" placeholder="Target language (e.g. Romanian)" aria-label="Target language" />
+      <div class="formality" role="group" aria-label="Formality level">
+        <button class="active" data-f="informal" id="btnInformal" aria-pressed="true">Informal</button>
+        <button data-f="formal" id="btnFormal" aria-pressed="false">Formal</button>
+      </div>
+      <button class="run-btn" id="runBtn" aria-label="Translate text">Translate</button>
+    </div>
+    <p class="shortcut-hint">Tip: Ctrl+Enter to translate</p>
+  </div>
 
-  <div class="card result-card" id="resultCard">
+  <div class="loading" id="loading" role="status" aria-live="polite">
+    <div class="spinner" aria-hidden="true"></div> Translating...
+  </div>
+  <div class="error" id="error" role="alert"></div>
+
+  <div class="card result-card" id="resultCard" aria-live="polite">
     <div class="section">
       <div class="section-label">Translation</div>
-      <div class="translation-text" id="translationText"></div>
+      <div class="translation-header">
+        <div class="translation-text" id="translationText"></div>
+        <button class="copy-btn" id="copyBtn" aria-label="Copy translation to clipboard">Copy</button>
+      </div>
       <div class="meta-row">
         <span class="badge badge-lang" id="sourceLang"></span>
         <span class="badge badge-tone" id="tone"></span>
@@ -83,7 +129,7 @@ input[type=text]::placeholder{color:var(--color-text-tertiary)}
       <div id="alternatives"></div>
     </div>
     <div class="section">
-      <div class="section-label">Meaning & context</div>
+      <div class="section-label">Meaning &amp; context</div>
       <div class="body-text" id="meaning"></div>
     </div>
     <div class="section">
@@ -91,37 +137,80 @@ input[type=text]::placeholder{color:var(--color-text-tertiary)}
       <div id="examples"></div>
     </div>
     <div class="section">
-      <div class="section-label">Word origin & etymology</div>
+      <div class="section-label">Word origin &amp; etymology</div>
       <div class="body-text" id="etymology"></div>
     </div>
   </div>
 </div>
 
 <script>
-(function() {
+(function () {
   var formality = 'informal';
 
-  document.getElementById('btnInformal').addEventListener('click', function() {
-    setFormality(this);
+  var savedKey = localStorage.getItem('lingua_api_key');
+  if (savedKey) document.getElementById('apiKey').value = savedKey;
+
+  document.getElementById('apiKey').addEventListener('change', function () {
+    localStorage.setItem('lingua_api_key', this.value.trim());
   });
-  document.getElementById('btnFormal').addEventListener('click', function() {
-    setFormality(this);
-  });
+
+  document.getElementById('btnInformal').addEventListener('click', function () { setFormality(this); });
+  document.getElementById('btnFormal').addEventListener('click', function () { setFormality(this); });
   document.getElementById('runBtn').addEventListener('click', runTranslate);
-  document.getElementById('inputText').addEventListener('keydown', function(e) {
+  document.getElementById('copyBtn').addEventListener('click', copyTranslation);
+  document.getElementById('inputText').addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && e.ctrlKey) runTranslate();
   });
 
   function setFormality(btn) {
-    document.querySelectorAll('.formality button').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.formality button').forEach(function (b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
     formality = btn.dataset.f;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function copyTranslation() {
+    var text = document.getElementById('translationText').textContent;
+    navigator.clipboard.writeText(text).then(function () {
+      var btn = document.getElementById('copyBtn');
+      btn.textContent = 'Copied!';
+      setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+    });
   }
 
   async function runTranslate() {
     var text = document.getElementById('inputText').value.trim();
     var lang = document.getElementById('targetLang').value.trim();
-    if (!text || !lang) return;
+    var apiKey = document.getElementById('apiKey').value.trim();
+    var hint = document.getElementById('validationHint');
+
+    if (!apiKey) {
+      hint.textContent = 'Please enter your Anthropic API key above.';
+      hint.classList.add('visible');
+      return;
+    }
+    if (!text) {
+      hint.textContent = 'Please enter text to translate.';
+      hint.classList.add('visible');
+      return;
+    }
+    if (!lang) {
+      hint.textContent = 'Please enter a target language.';
+      hint.classList.add('visible');
+      return;
+    }
+    hint.classList.remove('visible');
 
     var btn = document.getElementById('runBtn');
     var loading = document.getElementById('loading');
@@ -133,18 +222,48 @@ input[type=text]::placeholder{color:var(--color-text-tertiary)}
     error.classList.remove('visible');
     resultCard.classList.remove('visible');
 
-    var prompt = 'You are a professional linguist and translator. Translate the following text to ' + lang + ' using ' + formality + ' register.\n\nText: "' + text + '"\n\nRespond ONLY with a valid JSON object, no markdown, no extra text:\n{\n  "translation": "translated text",\n  "source_language": "detected language name",\n  "tone": "tone of source (casual, formal, sarcastic, etc)",\n  "formality_used": "' + formality + '",\n  "alternatives": ["alt1", "alt2", "alt3"],\n  "meaning": "explanation of meaning, idioms, cultural context",\n  "examples": [\n    {"source": "example in source language", "translation": "translated example"},\n    {"source": "example 2", "translation": "translation 2"},\n    {"source": "example 3", "translation": "translation 3"}\n  ],\n  "etymology": "origin of key words or phrases. If idiom or culturally specific, explain its history and why those words are used. If plain text, say so briefly."\n}';
+    var systemPrompt = [
+      'You are a professional linguist and translator.',
+      'Translate the user\'s text to ' + lang + ' using ' + formality + ' register.',
+      'Respond ONLY with a valid JSON object — no markdown, no extra text:',
+      '{',
+      '  "translation": "translated text",',
+      '  "source_language": "detected language name",',
+      '  "tone": "tone of source (casual, formal, sarcastic, etc)",',
+      '  "formality_used": "' + formality + '",',
+      '  "alternatives": ["alt1", "alt2", "alt3"],',
+      '  "meaning": "explanation of meaning, idioms, cultural context",',
+      '  "examples": [',
+      '    {"source": "example in source language", "translation": "translated example"},',
+      '    {"source": "example 2", "translation": "translation 2"},',
+      '    {"source": "example 3", "translation": "translation 3"}',
+      '  ],',
+      '  "etymology": "origin of key words or phrases. If idiom or culturally specific, explain its history. If plain text, say so briefly."',
+      '}'
+    ].join('\n');
 
     try {
       var response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
         body: JSON.stringify({
-          model: 'claude-haiku-4-5',
-          max_tokens: 1000,
-          messages: [{ role: 'user', content: prompt }]
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 2000,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: text }]
         })
       });
+
+      if (!response.ok) {
+        var errData = await response.json().catch(function () { return {}; });
+        var msg = (errData.error && errData.error.message) ? errData.error.message : 'HTTP ' + response.status;
+        throw new Error('api:' + msg);
+      }
 
       var data = await response.json();
       var raw = data.content[0].text.replace(/```json|```/g, '').trim();
@@ -156,19 +275,28 @@ input[type=text]::placeholder{color:var(--color-text-tertiary)}
       document.getElementById('formalityBadge').textContent = result.formality_used;
 
       document.getElementById('alternatives').innerHTML = result.alternatives
-        .map(function(a) { return '<div class="alt-item">' + a + '</div>'; }).join('');
+        .map(function (a) { return '<div class="alt-item">' + escapeHtml(a) + '</div>'; }).join('');
 
       document.getElementById('meaning').textContent = result.meaning;
 
       document.getElementById('examples').innerHTML = result.examples
-        .map(function(e) { return '<div class="example-item"><strong>' + e.source + '</strong><br>' + e.translation + '</div>'; }).join('');
+        .map(function (ex) {
+          return '<div class="example-item"><strong>' + escapeHtml(ex.source) + '</strong><br>' + escapeHtml(ex.translation) + '</div>';
+        }).join('');
 
       document.getElementById('etymology').textContent = result.etymology;
 
       resultCard.classList.add('visible');
-    } catch(err) {
-      document.getElementById('error').textContent = 'Translation failed. Check your API key or try again.';
-      document.getElementById('error').classList.add('visible');
+    } catch (err) {
+      var errEl = document.getElementById('error');
+      if (err.message && err.message.startsWith('api:')) {
+        errEl.textContent = 'API error: ' + err.message.slice(4);
+      } else if (err instanceof SyntaxError) {
+        errEl.textContent = 'Could not parse the translation response. Please try again.';
+      } else {
+        errEl.textContent = 'Network error — check your connection and try again.';
+      }
+      errEl.classList.add('visible');
     } finally {
       btn.disabled = false;
       loading.classList.remove('visible');
