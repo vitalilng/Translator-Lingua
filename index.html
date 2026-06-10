@@ -12,7 +12,6 @@
   --color-background-secondary: #f5f5f5;
   --color-background-tertiary: #f0f0f0;
   --color-background-info: #e8f0fe;
-  --color-background-success: #e6f4ea;
   --color-border-primary: #aaaaaa;
   --color-border-secondary: #dddddd;
   --color-border-tertiary: #eeeeee;
@@ -20,7 +19,6 @@
   --color-text-secondary: #555555;
   --color-text-tertiary: #999999;
   --color-text-info: #1a73e8;
-  --color-text-success: #137333;
   --color-text-danger: #c62828;
   --border-radius-md: 6px;
   --border-radius-lg: 10px;
@@ -31,34 +29,55 @@ body { font-family: var(--font-sans); background: var(--color-background-tertiar
 .header { margin-bottom: 2rem; }
 .header h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
 .header p { font-size: 14px; color: var(--color-text-secondary); margin-top: 4px; }
+
 .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
-.apikey-row { display: flex; gap: 8px; align-items: center; }
+
+/* API key collapsible */
+details.card summary {
+  font-size: 13px; color: var(--color-text-secondary); cursor: pointer;
+  user-select: none; list-style: none; display: flex; align-items: center; gap: 6px;
+}
+details.card summary::-webkit-details-marker { display: none; }
+details.card summary::before { content: '⚙'; font-size: 14px; }
+.apikey-row { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
 .apikey-row label { font-size: 13px; color: var(--color-text-secondary); white-space: nowrap; }
 .apikey-row input { flex: 1; padding: 7px 10px; font-size: 13px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); font-family: monospace; }
 .apikey-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; }
+
+/* Mode toggle */
+.mode-toggle { display: flex; margin-bottom: 12px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); overflow: hidden; width: fit-content; }
+.mode-btn { padding: 7px 20px; font-size: 13px; font-weight: 500; border: none; background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; }
+.mode-btn.active { background: var(--color-text-primary); color: #fff; }
+.mode-btn:not(.active):hover { background: var(--color-background-secondary); }
+
 textarea { width: 100%; min-height: 100px; padding: 10px 12px; font-size: 15px; font-family: var(--font-sans); resize: vertical; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); line-height: 1.5; }
 textarea:focus { outline: none; border-color: var(--color-border-primary); }
 textarea::placeholder { color: var(--color-text-tertiary); }
-.controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
-.shortcut-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; }
-input[type=text] { padding: 8px 12px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); min-width: 160px; max-width: 220px; }
+
+.controls { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; margin-top: 10px; }
+.lang-group { display: flex; flex-direction: column; gap: 6px; }
+.lang-select { padding: 8px 12px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); min-width: 160px; cursor: pointer; }
+input[type=text] { padding: 8px 12px; font-size: 14px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); min-width: 160px; }
 input[type=text]::placeholder { color: var(--color-text-tertiary); }
-.run-btn { padding: 8px 20px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+
+.run-btn { padding: 8px 20px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; min-height: 44px; align-self: flex-start; }
 .run-btn:hover { background: var(--color-background-secondary); }
 .run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.shortcut-hint { font-size: 12px; color: var(--color-text-tertiary); margin-top: 6px; }
+
 .validation-hint { font-size: 13px; color: var(--color-text-danger); margin-top: 6px; display: none; }
 .validation-hint.visible { display: block; }
 .result-card { display: none; }
 .result-card.visible { display: block; }
 .section { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
 .section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-tertiary); margin-bottom: 8px; }
 .translation-row { display: flex; gap: 12px; }
 .translation-col { flex: 1; min-width: 0; }
 .translation-col-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-tertiary); margin-bottom: 6px; }
 .translation-header { display: flex; align-items: flex-start; gap: 8px; }
 .translation-text { font-size: 18px; font-weight: 500; color: var(--color-text-primary); line-height: 1.4; flex: 1; }
-.copy-btn { padding: 4px 9px; font-size: 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.copy-btn { padding: 4px 9px; font-size: 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; white-space: nowrap; flex-shrink: 0; min-height: 32px; }
 .copy-btn:hover { background: var(--color-background-secondary); }
 .meta-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 .badge { font-size: 12px; padding: 3px 10px; border-radius: 99px; }
@@ -67,8 +86,6 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
 .body-text { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
 .alt-item { font-size: 14px; color: var(--color-text-primary); padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
 .alt-item:last-child { border-bottom: none; }
-.example-item { font-size: 14px; line-height: 1.5; padding: 6px 0; color: var(--color-text-secondary); }
-.example-item strong { color: var(--color-text-primary); font-weight: 500; }
 .loading { display: none; align-items: center; gap: 8px; color: var(--color-text-tertiary); font-size: 14px; padding: 1rem 0; }
 .loading.visible { display: flex; }
 .spinner { width: 16px; height: 16px; border: 1.5px solid var(--color-border-tertiary); border-top-color: var(--color-text-secondary); border-radius: 50%; animation: spin 0.7s linear infinite; }
@@ -80,8 +97,20 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
 .etym-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .etym-result { margin-top: 12px; display: none; }
 .etym-result.visible { display: block; }
-@media (max-width: 480px) {
+
+/* explain-only hidden by default */
+#sectionDefinition { display: none; }
+
+@media (max-width: 540px) {
   .translation-row { flex-direction: column; gap: 16px; }
+  .shortcut-hint { display: none; }
+  .controls { flex-direction: column; align-items: stretch; }
+  .lang-group { width: 100%; }
+  .lang-select, input[type=text] { width: 100%; max-width: 100%; min-width: 0; }
+  .run-btn { width: 100%; min-height: 52px; font-size: 16px; text-align: center; align-self: stretch; }
+  textarea { min-height: 130px; font-size: 16px; }
+  .mode-toggle { width: 100%; }
+  .mode-btn { flex: 1; }
 }
 </style>
 </head>
@@ -89,10 +118,11 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
 <div class="app">
   <div class="header">
     <h1>Lingua</h1>
-    <p>Translate text with meaning, examples, and word origins</p>
+    <p>Translate or explain text with meaning and word origins</p>
   </div>
 
-  <div class="card">
+  <details id="apiKeyDetails" class="card">
+    <summary>API Settings</summary>
     <form onsubmit="return false" autocomplete="off">
       <div class="apikey-row">
         <label for="apiKey">API Key</label>
@@ -100,25 +130,41 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
       </div>
     </form>
     <p class="apikey-hint">Stored in localStorage — sent only to the Anthropic API.</p>
-  </div>
+  </details>
 
   <div class="card">
+    <div class="mode-toggle" role="group" aria-label="Action mode">
+      <button class="mode-btn active" id="modeBtnTranslate" data-mode="translate">Translate</button>
+      <button class="mode-btn" id="modeBtnExplain" data-mode="explain">Explain</button>
+    </div>
+
     <textarea id="inputText" placeholder="Enter text to translate..." aria-label="Text to translate"></textarea>
     <div class="validation-hint" id="validationHint" role="alert"></div>
+
     <div class="controls">
-      <input type="text" id="targetLang" placeholder="Target language (e.g. Romanian)" aria-label="Target language" />
+      <div class="lang-group" id="langGroup">
+        <select id="targetLangSelect" class="lang-select" aria-label="Target language">
+          <option value="Romanian">Romanian</option>
+          <option value="Russian">Russian</option>
+          <option value="English">English</option>
+          <option value="other">Other...</option>
+        </select>
+        <input type="text" id="targetLangCustom" placeholder="Enter language..." aria-label="Custom target language" style="display:none;" />
+      </div>
       <button class="run-btn" id="runBtn" aria-label="Translate text">Translate</button>
     </div>
-    <p class="shortcut-hint">Tip: Ctrl+Enter to translate</p>
+    <p class="shortcut-hint" id="shortcutHint">Tip: Ctrl+Enter to translate</p>
   </div>
 
   <div class="loading" id="loading" role="status" aria-live="polite">
-    <div class="spinner" aria-hidden="true"></div> Translating...
+    <div class="spinner" aria-hidden="true"></div>
+    <span id="loadingText">Translating...</span>
   </div>
   <div class="error" id="error" role="alert"></div>
 
   <div class="card result-card" id="resultCard" aria-live="polite">
-    <div class="section">
+
+    <div class="section" id="sectionTranslation">
       <div class="section-label">Translation</div>
       <div class="translation-row">
         <div class="translation-col">
@@ -141,54 +187,108 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
         <span class="badge badge-tone" id="tone"></span>
       </div>
     </div>
+
+    <div class="section" id="sectionDefinition">
+      <div class="section-label">Definition</div>
+      <div class="body-text" id="definition"></div>
+      <div class="meta-row">
+        <span class="badge badge-lang" id="explainLang"></span>
+        <span class="badge badge-tone" id="explainRegister"></span>
+      </div>
+    </div>
+
     <div class="section">
-      <div class="section-label">Alternatives</div>
+      <div class="section-label" id="alternativesLabel">Alternatives</div>
       <div id="alternatives"></div>
     </div>
+
     <div class="section">
       <div class="section-label">Meaning &amp; context</div>
       <div class="body-text" id="meaning"></div>
     </div>
-    <div class="section">
-      <div class="section-label">Usage examples</div>
-      <div id="examples"></div>
-    </div>
+
     <div class="section">
       <button class="etym-btn" id="etymBtn" aria-expanded="false">Word origin &amp; etymology</button>
       <div class="etym-result body-text" id="etymology" role="region" aria-label="Word origin and etymology"></div>
     </div>
+
   </div>
 </div>
 
 <script>
 (function () {
+  var mode = 'translate';
   var lastText = '';
   var lastLang = '';
   var etymCached = false;
 
   var savedKey = localStorage.getItem('lingua_api_key');
-  if (savedKey) document.getElementById('apiKey').value = savedKey;
+  if (savedKey) {
+    document.getElementById('apiKey').value = savedKey;
+  } else {
+    document.getElementById('apiKeyDetails').open = true;
+  }
 
   document.getElementById('apiKey').addEventListener('change', function () {
     localStorage.setItem('lingua_api_key', this.value.trim());
   });
 
-  document.getElementById('runBtn').addEventListener('click', runTranslate);
+  // Mode toggle
+  document.querySelectorAll('.mode-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      mode = this.dataset.mode;
+      document.querySelectorAll('.mode-btn').forEach(function (b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      applyMode();
+    });
+  });
+
+  function applyMode() {
+    var isTranslate = mode === 'translate';
+    document.getElementById('langGroup').style.display = isTranslate ? '' : 'none';
+    document.getElementById('runBtn').textContent = isTranslate ? 'Translate' : 'Explain';
+    document.getElementById('runBtn').setAttribute('aria-label', isTranslate ? 'Translate text' : 'Explain word or phrase');
+    document.getElementById('inputText').placeholder = isTranslate
+      ? 'Enter text to translate...'
+      : 'Enter a word or phrase to explain...';
+    document.getElementById('shortcutHint').textContent = isTranslate
+      ? 'Tip: Ctrl+Enter to translate'
+      : 'Tip: Ctrl+Enter to explain';
+  }
+
+  // Language selector: show custom input when "Other" is chosen
+  document.getElementById('targetLangSelect').addEventListener('change', function () {
+    var custom = document.getElementById('targetLangCustom');
+    if (this.value === 'other') {
+      custom.style.display = '';
+      custom.focus();
+    } else {
+      custom.style.display = 'none';
+    }
+  });
+
+  document.getElementById('runBtn').addEventListener('click', runAction);
   document.getElementById('etymBtn').addEventListener('click', fetchEtymology);
   document.getElementById('inputText').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && e.ctrlKey) runTranslate();
+    if (e.key === 'Enter' && e.ctrlKey) runAction();
   });
 
   document.querySelectorAll('.copy-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var targetId = this.dataset.copy;
-      var text = document.getElementById(targetId).textContent;
+      var text = document.getElementById(this.dataset.copy).textContent;
       navigator.clipboard.writeText(text).then(function () {
         btn.textContent = 'Copied!';
         setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
       });
     });
   });
+
+  function getTargetLang() {
+    var sel = document.getElementById('targetLangSelect');
+    return sel.value === 'other'
+      ? document.getElementById('targetLangCustom').value.trim()
+      : sel.value;
+  }
 
   function escapeHtml(str) {
     return String(str)
@@ -198,46 +298,22 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
       .replace(/"/g, '&quot;');
   }
 
+  function runAction() {
+    if (mode === 'translate') runTranslate(); else runExplain();
+  }
+
   async function runTranslate() {
     var text = document.getElementById('inputText').value.trim();
-    var lang = document.getElementById('targetLang').value.trim();
+    var lang = getTargetLang();
     var apiKey = document.getElementById('apiKey').value.trim();
-    var hint = document.getElementById('validationHint');
 
-    if (!apiKey) {
-      hint.textContent = 'Please enter your Anthropic API key above.';
-      hint.classList.add('visible');
-      return;
-    }
-    if (!text) {
-      hint.textContent = 'Please enter text to translate.';
-      hint.classList.add('visible');
-      return;
-    }
-    if (!lang) {
-      hint.textContent = 'Please enter a target language.';
-      hint.classList.add('visible');
-      return;
-    }
-    hint.classList.remove('visible');
-
-    var btn = document.getElementById('runBtn');
-    var loading = document.getElementById('loading');
-    var error = document.getElementById('error');
-    var resultCard = document.getElementById('resultCard');
-
-    btn.disabled = true;
-    loading.classList.add('visible');
-    error.classList.remove('visible');
-    resultCard.classList.remove('visible');
-
-    lastText = text;
-    lastLang = lang;
-    etymCached = false;
-    document.getElementById('etymology').textContent = '';
-    document.getElementById('etymology').classList.remove('visible');
-    document.getElementById('etymBtn').textContent = 'Word origin & etymology';
-    document.getElementById('etymBtn').setAttribute('aria-expanded', 'false');
+    if (!apiKey) { showHint('Please enter your Anthropic API key in API Settings above.'); return; }
+    if (!text)   { showHint('Please enter text to translate.'); return; }
+    if (!lang)   { showHint('Please enter a target language.'); return; }
+    clearHint();
+    setLoading(true, 'Translating...');
+    lastText = text; lastLang = lang; etymCached = false;
+    resetEtym();
 
     var systemPrompt = [
       'You are a professional linguist and translator.',
@@ -249,73 +325,151 @@ input[type=text]::placeholder { color: var(--color-text-tertiary); }
       '  "source_language": "detected language name",',
       '  "tone": "tone of source (casual, formal, sarcastic, etc)",',
       '  "alternatives": ["alt1", "alt2", "alt3"],',
-      '  "meaning": "explanation of meaning, idioms, cultural context",',
-      '  "examples": [',
-      '    {"source": "example in source language", "translation": "translated example"},',
-      '    {"source": "example 2", "translation": "translation 2"},',
-      '    {"source": "example 3", "translation": "translation 3"}',
-      '  ]',
+      '  "meaning": "explanation of meaning, idioms, cultural context"',
       '}'
     ].join('\n');
 
     try {
-      var response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 2500,
-          system: systemPrompt,
-          messages: [{ role: 'user', content: text }]
-        })
-      });
-
-      if (!response.ok) {
-        var errData = await response.json().catch(function () { return {}; });
-        var msg = (errData.error && errData.error.message) ? errData.error.message : 'HTTP ' + response.status;
-        throw new Error('api:' + msg);
-      }
-
-      var data = await response.json();
-      var raw = data.content[0].text.replace(/```json|```/g, '').trim();
-      var result = JSON.parse(raw);
+      var result = await callApi(apiKey, systemPrompt, text, 2000);
+      document.getElementById('sectionTranslation').style.display = '';
+      document.getElementById('sectionDefinition').style.display = 'none';
+      document.getElementById('alternativesLabel').textContent = 'Alternatives';
 
       document.getElementById('translationInformal').textContent = result.translation_informal;
       document.getElementById('translationFormal').textContent = result.translation_formal;
       document.getElementById('sourceLang').textContent = result.source_language;
       document.getElementById('tone').textContent = result.tone;
-
-      document.getElementById('alternatives').innerHTML = result.alternatives
+      document.getElementById('alternatives').innerHTML = (result.alternatives || [])
         .map(function (a) { return '<div class="alt-item">' + escapeHtml(a) + '</div>'; }).join('');
-
       document.getElementById('meaning').textContent = result.meaning;
 
-      document.getElementById('examples').innerHTML = result.examples
-        .map(function (ex) {
-          return '<div class="example-item"><strong>' + escapeHtml(ex.source) + '</strong><br>' + escapeHtml(ex.translation) + '</div>';
-        }).join('');
-
-      resultCard.classList.add('visible');
+      document.getElementById('resultCard').classList.add('visible');
     } catch (err) {
-      var errEl = document.getElementById('error');
-      if (err.message && err.message.startsWith('api:')) {
-        errEl.textContent = 'API error: ' + err.message.slice(4);
-      } else if (err instanceof SyntaxError) {
-        errEl.textContent = 'Could not parse the translation response. Please try again.';
-      } else {
-        errEl.textContent = 'Network error — check your connection and try again.';
-      }
-      errEl.classList.add('visible');
+      showError(err);
     } finally {
+      setLoading(false);
+    }
+  }
+
+  async function runExplain() {
+    var text = document.getElementById('inputText').value.trim();
+    var apiKey = document.getElementById('apiKey').value.trim();
+
+    if (!apiKey) { showHint('Please enter your Anthropic API key in API Settings above.'); return; }
+    if (!text)   { showHint('Please enter a word or phrase to explain.'); return; }
+    clearHint();
+    setLoading(true, 'Explaining...');
+    lastText = text; lastLang = ''; etymCached = false;
+    resetEtym();
+
+    var systemPrompt = [
+      'You are a professional linguist.',
+      'Explain the meaning of the user\'s word or phrase clearly.',
+      'Respond ONLY with a valid JSON object — no markdown, no extra text:',
+      '{',
+      '  "language": "detected language name",',
+      '  "definition": "clear, detailed definition of the word or phrase",',
+      '  "register": "formal / informal / slang / neutral / technical / etc",',
+      '  "synonyms": ["syn1", "syn2", "syn3"],',
+      '  "meaning": "nuances, cultural context, usage notes, idiom origin if applicable"',
+      '}'
+    ].join('\n');
+
+    try {
+      var result = await callApi(apiKey, systemPrompt, text, 1500);
+      document.getElementById('sectionTranslation').style.display = 'none';
+      document.getElementById('sectionDefinition').style.display = '';
+      document.getElementById('alternativesLabel').textContent = 'Synonyms';
+
+      document.getElementById('definition').textContent = result.definition;
+      document.getElementById('explainLang').textContent = result.language;
+      document.getElementById('explainRegister').textContent = result.register;
+      document.getElementById('alternatives').innerHTML = (result.synonyms || [])
+        .map(function (s) { return '<div class="alt-item">' + escapeHtml(s) + '</div>'; }).join('');
+      document.getElementById('meaning').textContent = result.meaning;
+
+      document.getElementById('resultCard').classList.add('visible');
+    } catch (err) {
+      showError(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function callApi(apiKey, systemPrompt, userText, maxTokens) {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: maxTokens || 2000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userText }]
+      })
+    });
+
+    if (!response.ok) {
+      var errData = await response.json().catch(function () { return {}; });
+      var msg = (errData.error && errData.error.message) ? errData.error.message : 'HTTP ' + response.status;
+      throw new Error('api:' + msg);
+    }
+
+    var data = await response.json();
+    var raw = data.content[0].text.replace(/```json|```/g, '').trim();
+    return JSON.parse(raw);
+  }
+
+  function showHint(msg) {
+    var hint = document.getElementById('validationHint');
+    hint.textContent = msg;
+    hint.classList.add('visible');
+  }
+  function clearHint() {
+    document.getElementById('validationHint').classList.remove('visible');
+  }
+
+  function showError(err) {
+    var errEl = document.getElementById('error');
+    if (err.message && err.message.startsWith('api:')) {
+      errEl.textContent = 'API error: ' + err.message.slice(4);
+    } else if (err instanceof SyntaxError) {
+      errEl.textContent = 'Could not parse the response. Please try again.';
+    } else {
+      errEl.textContent = 'Network error — check your connection and try again.';
+    }
+    errEl.classList.add('visible');
+  }
+
+  function setLoading(on, text) {
+    var btn = document.getElementById('runBtn');
+    var loading = document.getElementById('loading');
+    if (on) {
+      btn.disabled = true;
+      document.getElementById('loadingText').textContent = text || 'Loading...';
+      loading.classList.add('visible');
+      document.getElementById('error').classList.remove('visible');
+      document.getElementById('resultCard').classList.remove('visible');
+    } else {
       btn.disabled = false;
       loading.classList.remove('visible');
     }
   }
+
+  function resetEtym() {
+    var etymEl = document.getElementById('etymology');
+    etymEl.textContent = '';
+    etymEl.classList.remove('visible');
+    var etymBtn = document.getElementById('etymBtn');
+    etymBtn.textContent = 'Word origin & etymology';
+    etymBtn.setAttribute('aria-expanded', 'false');
+    etymCached = false;
+  }
+
   async function fetchEtymology() {
     var etymEl = document.getElementById('etymology');
     var etymBtn = document.getElementById('etymBtn');
